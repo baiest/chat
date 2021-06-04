@@ -1,10 +1,25 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const cors = require('cors');
+const PORT = process.env.PORT || 4000;
 
 app.set('port', PORT);
+app.use(cors())
+app.get('/', (req, res) => {
+    res.send('hola')
+})
+const server = app.listen(PORT, () => console.log('Servidor iniciado en el puerto %d', PORT));
 
-app.listen(PORT, () => console.log(`Servidor iniciado en el puerto ${PORT}`))
+const socketio = require('socket.io');
+const io = socketio(server, {
+    cors: {
+        origins: ['*']
+    }
+});
 
-app.use(express.static(path.join("../build")));
+// SOCKETS
+io.on('connection', (socket) => {
+    socket.on('mensaje', (data) => {
+        socket.emit('recibido', 'te recibo')
+    })
+});

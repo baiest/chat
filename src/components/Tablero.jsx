@@ -1,10 +1,11 @@
 import React from 'react';
+import socketIOClient from 'socket.io-client';
 import '../assets/css/Tablero.css'
+const ENDPOINT = 'http://localhost:4000';
 class Tablero extends React.Component{
     constructor(props){
         super(props)
         this.state= {
-            tablero: null,
             mi_mensaje: '',
             mensajes: [
                 {
@@ -58,18 +59,31 @@ class Tablero extends React.Component{
                 
             ]
         }
-        
+        this.tablero = null;
+        this.size_mensajes = this.state.mensajes.length;
+        this.socket = socketIOClient(ENDPOINT)
         this.handleChange = this.handleChange.bind(this);
         this.enviarMensaje = this.enviarMensaje.bind(this);
         this.validarEnter = this.validarEnter.bind(this);
+
+        this.socket.on('recibido', data => {
+            this.setState({ mensajes: [...this.state.mensajes, {enviado: false, texto: data}]})
+        })
     }
 
     componentDidMount(){
-        this.setState({tablero: document.querySelector('.tablero__mensajes')})
+        this.tablero=document.querySelector('.tablero__mensajes');
+        this.socket.on('bienvenido', data=> console.log('data', data))
+        
     }
 
     componentDidUpdate(){
-        this.state.tablero.scrollTop = this.state.tablero.scrollHeight;
+        if(this.size_mensajes < this.state.mensajes.length)
+        {
+            this.size_mensajes = this.state.mensajes.length
+            this.tablero.scrollTop = this.tablero.scrollHeight;
+        }
+
     }
     handleChange(e){
         this.setState({mi_mensaje: e.target.value})
@@ -87,7 +101,7 @@ class Tablero extends React.Component{
     }
     enviarMensaje(){  
         if (this.state.mi_mensaje !== ''){
-            console.log(this.state.tablero.scrollTop)
+            this.socket.emit('mensaje', this.state.mi_mensaje)
             this.setState({
                 mensajes: [ 
                     ...this.state.mensajes, 
@@ -96,10 +110,11 @@ class Tablero extends React.Component{
                         texto: this.state.mi_mensaje
                     }
                 ]})
-        }
+            }
         this.setState({mi_mensaje: ''})
     }
     render(){
+    
     return (
         <section className="tablero">
             <ul className="tablero__mensajes">
