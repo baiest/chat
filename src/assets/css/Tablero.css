@@ -1,0 +1,69 @@
+.tablero {
+    padding: 10px 0;
+    min-width: 300px;
+    width: 400px;
+    height: 500px;
+    margin: 40px 0;
+    border: 2px solid #ccceee;
+    border-radius: 25px 25px 0 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.tablero__mensajes {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.mensaje {
+    max-width: 40%;
+    list-style: none;
+    padding: 10px 10px;
+    margin: 5px 30px;
+    border-radius: 15px;
+}
+
+.mensaje p {
+    padding: 0;
+    margin: 0;
+    white-space: break-spaces;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.mensaje__enviado {
+    align-self: flex-end;
+    text-align: right;
+    background: lightgreen;
+}
+
+.mensaje__recibido {
+    align-self: flex-start;
+    text-align: left;
+    background: lightblue;
+}
+
+.tablero__input {
+    display: flex;
+    height: 40px;
+}
+
+.tablero__input textarea {
+    font-family: 'Lato', sans-serif;
+    padding: 15px;
+    padding-top: 10px;
+    width: 80%;
+    margin: 0 5px;
+    border-radius: 5px;
+    overflow-y: auto;
+    resize: none;
+}
+
+.tablero__input textarea:focus {
+    outline: none;
+}
