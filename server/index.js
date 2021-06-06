@@ -17,9 +17,17 @@ const io = socketio(server, {
     }
 });
 
-// SOCKETS
+const usuarios = []
+    // SOCKETS
 io.on('connection', (socket) => {
+    usuarios.push(socket.id);
+    console.log("---", socket)
     socket.on('mensaje', (data) => {
         socket.emit('recibido', 'te recibo')
     })
 });
+
+io.on('disconnected', (socket) => {
+    io.sockets.disconnect();
+    io.sockets.close();
+})

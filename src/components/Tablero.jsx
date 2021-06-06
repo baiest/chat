@@ -61,7 +61,7 @@ class Tablero extends React.Component{
         }
         this.tablero = null;
         this.size_mensajes = this.state.mensajes.length;
-        this.socket = socketIOClient(ENDPOINT)
+        this.socket = socketIOClient(ENDPOINT, { 'forceNew': true})
         this.handleChange = this.handleChange.bind(this);
         this.enviarMensaje = this.enviarMensaje.bind(this);
         this.validarEnter = this.validarEnter.bind(this);
